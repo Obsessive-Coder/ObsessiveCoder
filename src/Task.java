@@ -7,12 +7,20 @@ public class Task extends TimerTask {
 	
 	public Task(String message, Runnable next) {
 		this.message = message;
-		this.next = next;		
+		this.next = next;
 	}
 	
 	public void start(long length) {
+		String message = this.message;
+		int startIndex = message.length();
+		
+		for(int i = startIndex; i < 23; i++) {
+			message += " ";
+		}
+		
 		System.out.print("\r");
-		System.out.print("Start " + this.message);
+		System.out.print(message);
+		System.out.print("\r");
 		Timer timer = new Timer();
 		timer.schedule(this, length);
 	}

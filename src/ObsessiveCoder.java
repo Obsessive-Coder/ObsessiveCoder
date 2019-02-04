@@ -2,10 +2,11 @@ import java.util.HashMap;
 
 public class ObsessiveCoder {
 	// Constants.
-	private static final String MESSAGE_WRITE_CODE = "writing code ...";
-	private static final String MESSAGE_SHORT_BREAK = "taking a break ...";
-	private static final String MESSAGE_LONG_BREAK = "taking a LONG break ...";
-	private static final String MESSAGE_SLEEP = "sleeping ...";
+	private static final String MESSAGE_WRITE_CODE = "Writing code ...";
+	private static final String MESSAGE_SHORT_BREAK = "Taking a break ...";
+	private static final String MESSAGE_LONG_BREAK = "Taking a LONG break ...";
+	private static final String MESSAGE_WAKE_UP = "Waking up ...";
+	private static final String MESSAGE_SLEEP = "Sleeping ...";
 	
 	private int breakCount;
 	private int longBreakCount;
@@ -23,9 +24,12 @@ public class ObsessiveCoder {
 		HashMap<String, Integer> stats = new HashMap<String, Integer>();
 		stats.put("sprintTotal", 0);
 		this.stats = stats;
-		
-		this.setCurrentTask("waking up ...", this.writeCode);
 	}
+	
+	private void wakeUp() {
+		this.setCurrentTask(MESSAGE_WAKE_UP, this.writeCode);
+		this.currentTask.start(1000L);
+	};
 	
 	Runnable writeCode = () -> {	    
 	    this.setCurrentTask(MESSAGE_WRITE_CODE, this.takeBreak);
@@ -61,6 +65,6 @@ public class ObsessiveCoder {
 
 	public static void main(String[] args) {
 		ObsessiveCoder jared = new ObsessiveCoder();
-		jared.currentTask.start(3000);
+		jared.wakeUp();
 	}
 }
