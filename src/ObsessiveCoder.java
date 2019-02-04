@@ -1,81 +1,66 @@
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class ObsessiveCoder {
 	// Constants.
-	private static final String MESSAGE_WRITE_CODE = "Writing code ...";
-	private static final String MESSAGE_SHORT_BREAK = "Taking a break ...";
-	private static final String MESSAGE_LONG_BREAK = "Taking a LONG break ...";
-	private static final String MESSAGE_SLEEP = "Sleeping ...";
+	private static final String MESSAGE_WRITE_CODE = "writing code ...";
+	private static final String MESSAGE_SHORT_BREAK = "taking a break ...";
+	private static final String MESSAGE_LONG_BREAK = "taking a LONG break ...";
+	private static final String MESSAGE_SLEEP = "sleeping ...";
 	
-	private String currentAction;
+	private int breakCount;
+	private int longBreakCount;
 	private HashMap<String, Integer> stats;
 	
+	private Task currentTask;
+	private void setCurrentTask(String message, Runnable next) {
+		this.currentTask = new Task(message, next);
+	}
+	
 	public ObsessiveCoder() {
+		this.breakCount = 0;
+		this.longBreakCount = 0;
+		
 		HashMap<String, Integer> stats = new HashMap<String, Integer>();
-		stats.put("breakCount", 0);
-		stats.put("longBreakCount", 0);
+		stats.put("sprintTotal", 0);
 		this.stats = stats;
+		
+		this.setCurrentTask("waking up ...", this.writeCode);
 	}
 	
-	public void writeCode() {
-		this.currentAction = MESSAGE_WRITE_CODE;
-		System.out.println(this.currentAction);
-		
-		ObsessiveCoder self = this;
-		
-		TimerTask task = new TimerTask() {
-	        public void run() {
-	            System.out.println("Finished: " + self.currentAction);
-	            System.out.println("");
-	            self.takeBreak();
-	        }
-	    };
+	Runnable writeCode = () -> {	    
+	    this.setCurrentTask(MESSAGE_WRITE_CODE, this.takeBreak);
+	    this.currentTask.start(6000L);
+	};
+	
+	Runnable takeBreak = () -> {
+	    String taskMessage = MESSAGE_SHORT_BREAK;	    
+	    Integer breakCount = this.breakCount + 1;
+	    Integer longBreakCount = this.longBreakCount;
+	    long breakLength = 1000L;
 	    
-		Timer pomodoro = new Timer();
-		pomodoro.schedule(task, 3000L);
-	}
-	
-	public void takeBreak() {
-		this.currentAction = MESSAGE_SHORT_BREAK;
-		Integer breakCount = this.stats.get("breakCount") + 1;
-		Integer longBreakCount = this.stats.get("longBreakCount");
-		long breakLength = 3000L;
-		if(breakCount == 4) {
-			this.currentAction = MESSAGE_LONG_BREAK;
-			breakCount = 0;
-			longBreakCount += 1;
-			breakLength = 5000L;
-			if(longBreakCount == 3) {
-				this.currentAction = MESSAGE_SLEEP;
-				longBreakCount = 0;
-				breakLength = 10000L;
-			}
-		}
-		
-		this.stats.put("breakCount", breakCount);
-		this.stats.put("longBreakCount", longBreakCount);
-		
-		System.out.println(this.currentAction);
-		System.out.println(this.stats);
-		
-		ObsessiveCoder self = this;
-		
-		TimerTask task = new TimerTask() {
-	        public void run() {
-	            System.out.println("Finished: " + self.currentAction);
-	            System.out.println("");
-	            self.writeCode();
-	        }
-	    };
+	    if(breakCount == 4) {
+	    	int sprintTotal = this.stats.get("sprintTotal");
+	    	this.stats.put("sprintTotal", sprintTotal + 1);
+	    	taskMessage = MESSAGE_LONG_BREAK;
+	    	breakCount = 0;
+	    	longBreakCount += 1;
+	    	breakLength = 3000L;
+	    	if(longBreakCount == 3) {
+	    		taskMessage = MESSAGE_SLEEP;
+	    		longBreakCount = 0;
+	    		breakLength = 10000L;
+	    	}
+	    }
 	    
-		Timer pomodoro = new Timer();
-		pomodoro.schedule(task, breakLength);
-	}
-	
+		this.breakCount = breakCount;
+		this.longBreakCount = longBreakCount;
+		
+		this.setCurrentTask(taskMessage, this.writeCode);
+	    this.currentTask.start(breakLength);
+	};
+
 	public static void main(String[] args) {
 		ObsessiveCoder jared = new ObsessiveCoder();
-		jared.writeCode();
+		jared.currentTask.start(3000);
 	}
 }
