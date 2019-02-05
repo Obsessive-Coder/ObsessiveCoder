@@ -7,9 +7,15 @@ public class ObsessiveCoder {
 	private static final String MESSAGE_LONG_BREAK = "Taking a LONG break ...";
 	private static final String MESSAGE_WAKE_UP = "Waking up ...";
 	private static final String MESSAGE_SLEEP = "Sleeping ...";
+	public static final long LENGTH_WAKE_UP = 60L * 1000L * 60L; // 60 minutes.
+	public static final long LENGTH_WRITE_CODE = 60L * 1000L * 60L; // 60 minutes.
+	public static final long LENGTH_SHORT_BREAK = 60L * 1000L * 10L; // 10 minutes.
+	public static final long LENGTH_LONG_BREAK = 60L * 1000L * 30L; // 30 minutes.
+	public static final long LENGTH_SLEEP = 60L * 1000L *  60L * 6L; // 6 hours;
 	
 	private int breakCount;
 	private int longBreakCount;
+	private boolean isJustTesting = true;
 	
 	private Task currentTask;
 	private void setCurrentTask(String message, Runnable next) {
@@ -24,26 +30,31 @@ public class ObsessiveCoder {
 	Runnable wakeUp = () -> {
 		System.out.print("Good Morning!");
 		this.setCurrentTask(MESSAGE_WAKE_UP, this.writeCode);
-		this.currentTask.start(6000L);
+		
+		long taskLength = this.getTaskLength(LENGTH_WAKE_UP);
+		this.currentTask.start(taskLength);
 	};
 	
 	Runnable writeCode = () -> {	    
 	    this.setCurrentTask(MESSAGE_WRITE_CODE, this.takeBreak);
-	    this.currentTask.start(6000L);
+	    
+	    long taskLength = this.getTaskLength(LENGTH_WRITE_CODE);
+	    this.currentTask.start(taskLength);
 	};
 	
 	Runnable takeBreak = () -> {
 	    String taskMessage = MESSAGE_SHORT_BREAK;	    
 	    Integer breakCount = this.breakCount + 1;
 	    Integer longBreakCount = this.longBreakCount;
-	    long breakLength = 1000L;
+	    long taskLength = LENGTH_SHORT_BREAK;
 	    Runnable next = this.writeCode;
 	    
+	    // Reset breakCount and set length to long break.
 	    if(breakCount == 4) {
 	    	taskMessage = MESSAGE_LONG_BREAK;
 	    	breakCount = 0;
 	    	longBreakCount += 1;
-	    	breakLength = 3000L;
+	    	taskLength = LENGTH_LONG_BREAK;
 	    }
 	    
 	    // Reset longBreakCount and make next action sleep
@@ -51,7 +62,7 @@ public class ObsessiveCoder {
 	    	// The message will change, and the break will be longer to simulate sleep.
 	    	taskMessage = MESSAGE_SLEEP;
 	    	longBreakCount = 0;
-	    	breakLength = 10000L;
+	    	taskLength = LENGTH_SLEEP;
 	    	next = this.wakeUp;
     	}
 	    
@@ -59,10 +70,16 @@ public class ObsessiveCoder {
 		this.breakCount = breakCount;
 		this.longBreakCount = longBreakCount;
 		
-		// Update and start .
+		// Update and start task.
 		this.setCurrentTask(taskMessage, next);
-	    this.currentTask.start(breakLength);
+		taskLength = this.getTaskLength(taskLength);
+	    this.currentTask.start(taskLength);
 	};
+	
+	private long getTaskLength(long length) {
+		long taskLength = length;
+		return (this.isJustTesting == true) ? (taskLength / 1000L) : taskLength;
+	}
 
 	public static void main(String[] args) {
 		ObsessiveCoder jared = new ObsessiveCoder();
