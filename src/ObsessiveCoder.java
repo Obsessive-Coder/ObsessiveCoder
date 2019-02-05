@@ -10,7 +10,6 @@ public class ObsessiveCoder {
 	
 	private int breakCount;
 	private int longBreakCount;
-	private HashMap<String, Integer> stats;
 	
 	private Task currentTask;
 	private void setCurrentTask(String message, Runnable next) {
@@ -20,15 +19,12 @@ public class ObsessiveCoder {
 	public ObsessiveCoder() {
 		this.breakCount = 0;
 		this.longBreakCount = 0;
-		
-		HashMap<String, Integer> stats = new HashMap<String, Integer>();
-		stats.put("sprintTotal", 0);
-		this.stats = stats;
 	}
 	
-	private void wakeUp() {
+	Runnable wakeUp = () -> {
+		System.out.print("Good Morning!");
 		this.setCurrentTask(MESSAGE_WAKE_UP, this.writeCode);
-		this.currentTask.start(1000L);
+		this.currentTask.start(6000L);
 	};
 	
 	Runnable writeCode = () -> {	    
@@ -41,30 +37,35 @@ public class ObsessiveCoder {
 	    Integer breakCount = this.breakCount + 1;
 	    Integer longBreakCount = this.longBreakCount;
 	    long breakLength = 1000L;
+	    Runnable next = this.writeCode;
 	    
 	    if(breakCount == 4) {
-	    	int sprintTotal = this.stats.get("sprintTotal");
-	    	this.stats.put("sprintTotal", sprintTotal + 1);
 	    	taskMessage = MESSAGE_LONG_BREAK;
 	    	breakCount = 0;
 	    	longBreakCount += 1;
 	    	breakLength = 3000L;
-	    	if(longBreakCount == 3) {
-	    		taskMessage = MESSAGE_SLEEP;
-	    		longBreakCount = 0;
-	    		breakLength = 10000L;
-	    	}
 	    }
 	    
+	    // Reset longBreakCount and make next action sleep
+	    if(longBreakCount == 3) {
+	    	// The message will change, and the break will be longer to simulate sleep.
+	    	taskMessage = MESSAGE_SLEEP;
+	    	longBreakCount = 0;
+	    	breakLength = 10000L;
+	    	next = this.wakeUp;
+    	}
+	    
+	    // Update break counts.
 		this.breakCount = breakCount;
 		this.longBreakCount = longBreakCount;
 		
-		this.setCurrentTask(taskMessage, this.writeCode);
+		// Update and start .
+		this.setCurrentTask(taskMessage, next);
 	    this.currentTask.start(breakLength);
 	};
 
 	public static void main(String[] args) {
 		ObsessiveCoder jared = new ObsessiveCoder();
-		jared.wakeUp();
+		jared.wakeUp.run();
 	}
 }

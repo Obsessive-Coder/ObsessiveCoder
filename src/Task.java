@@ -10,10 +10,9 @@ public class Task extends TimerTask {
 		this.next = next;
 	}
 	
-	public void start(long length) {
+	private void printMessage() {
 		String message = this.message;
 		int startIndex = message.length();
-		
 		for(int i = startIndex; i < 23; i++) {
 			message += " ";
 		}
@@ -21,6 +20,10 @@ public class Task extends TimerTask {
 		System.out.print("\r");
 		System.out.print(message);
 		System.out.print("\r");
+	}
+	
+	public void start(long length) {
+		this.printMessage();
 		Timer timer = new Timer();
 		timer.schedule(this, length);
 	}
