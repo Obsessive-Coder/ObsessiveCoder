@@ -1,4 +1,6 @@
 import javax.swing.JOptionPane;
+
+import java.util.Map;
 import java.util.Timer;
 
 /**
@@ -49,8 +51,23 @@ public class Controller {
 	public static void promptAction(Programmer coder) {
 		String coderName = coder.getName();
 		String[] coderActions = coder.getActions();
+		
+		Map<String, Integer> statistics = coder.getStatistics();
+		Map<String, Integer> needs = coder.getNeeds();
+		String message = "Statistics:\n";
+		
+		for(String stat : statistics.keySet()) {
+			message += stat + ": " + statistics.get(stat) + "\n";
+		}
+		
+		message += "\nNeeds:\n";
+		for(String need : needs.keySet()) {
+			message += need + ": " + needs.get(need) + "\n";
+		}
+		
+		message += "\n" + PROMPT_ACTION_MESSAGE;
 			
-		String action = (String) JOptionPane.showInputDialog(null, PROMPT_ACTION_MESSAGE, PROMPT_ACTION_TITLE + coderName, JOptionPane.QUESTION_MESSAGE, null, coderActions, coderActions[2]);
+		String action = (String) JOptionPane.showInputDialog(null, message, PROMPT_ACTION_TITLE + coderName, JOptionPane.QUESTION_MESSAGE, null, coderActions, coderActions[2]);
 		CoderTask coderTask;
 		
 		if (action == null) {
