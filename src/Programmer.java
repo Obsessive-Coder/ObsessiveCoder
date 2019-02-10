@@ -10,9 +10,13 @@ public class Programmer {
 	private final String SLEEP_ACTION_TEXT = "sleeping";
 	private final String CODE_ACTION_TEXT = "coding";
 	
-	private final long EAT_ACTION_LENGTH = 1000L;
-	private final long SLEEP_ACTION_LENGTH = 9000L;
-	private final long CODE_ACTION_LENGTH = 3000L;
+	private final long EAT_ACTION_LENGTH = 60L * 1000L * 10L; // 10 minutes
+	private final long SLEEP_ACTION_LENGTH = 60L * 1000L * 60L * 6L; // 6 hours
+	private final long CODE_ACTION_LENGTH = 60L * 1000L * 60L; // 60 minutes
+	
+	private final long TEST_EAT_ACTION_LENGTH = 1000L;
+	private final long TEST_SLEEP_ACTION_LENGTH = 9000L;
+	private final long TEST_CODE_ACTION_LENGTH = 3000L;
 	
 	private final String[] BASIC_ACTIONS = new String[] {"eat", "sleep", "code", "show needs", "show stats"};
 	private final String[] BASIC_NEEDS = new String[] {"satiation", "sleep", "sanity"};
@@ -87,7 +91,7 @@ public class Programmer {
 	public CoderTask eatFood() {
 		System.out.println(this.EAT_ACTION_TEXT + " ...");
 		
-		return new CoderTask(this.EAT_ACTION_TEXT, this.EAT_ACTION_LENGTH, this);
+		return new CoderTask(this.EAT_ACTION_TEXT, this.TEST_EAT_ACTION_LENGTH, this);
 	}
 	
 	/**
@@ -99,7 +103,7 @@ public class Programmer {
 	public CoderTask gotoSleep() {
 		System.out.println(this.SLEEP_ACTION_TEXT + " ...");
 		
-		return new CoderTask(this.SLEEP_ACTION_TEXT, this.SLEEP_ACTION_LENGTH, this);
+		return new CoderTask(this.SLEEP_ACTION_TEXT, this.TEST_SLEEP_ACTION_LENGTH, this);
 	}
 	
 	/**
@@ -111,7 +115,7 @@ public class Programmer {
 	public CoderTask writeCode() {		
 		System.out.println(this.CODE_ACTION_TEXT + " ...");
 		
-		return new CoderTask(this.CODE_ACTION_TEXT, this.CODE_ACTION_LENGTH, this);
+		return new CoderTask(this.CODE_ACTION_TEXT, this.TEST_CODE_ACTION_LENGTH, this);
 	}
 	
 	/**
