@@ -46,13 +46,13 @@ public class Controller {
 		}
 		
 		switch(action) {
-		case "Eat":
+		case "eat":
 			coderTask = (CoderTask) coder.eatFood();
 			break;
-		case "Sleep":
+		case "sleep":
 			coderTask = (CoderTask) coder.gotoSleep();
 			break;
-		case "Code":
+		case "code":
 			coderTask = (CoderTask) coder.writeCode();
 			break;
 		default:

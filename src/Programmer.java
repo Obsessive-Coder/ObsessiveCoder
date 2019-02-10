@@ -3,6 +3,16 @@
  * <p>It holds the name of the user, their statistics, and currents needs.</p>
  */
 public class Programmer {
+	private final String EAT_ACTION_TEXT = "eating";
+	private final String SLEEP_ACTION_TEXT = "sleeping";
+	private final String CODE_ACTION_TEXT = "coding";
+	
+	private final long EAT_ACTION_LENGTH = 1000L;
+	private final long SLEEP_ACTION_LENGTH = 9000L;
+	private final long CODE_ACTION_LENGTH = 3000L;
+	
+	private final String[] BASIC_ACTIONS = new String[] {"eat", "sleep", "code"};
+	
 	private String name;
 	/**
 	 * getName()
@@ -32,9 +42,9 @@ public class Programmer {
 	 * @return The CoderTask Object to be completed
 	*/
 	public CoderTask eatFood() {
-		System.out.println("Eating ...");
+		System.out.println(this.EAT_ACTION_TEXT + " ...");
 		
-		return new CoderTask("Eating", 1000L, this);
+		return new CoderTask(this.EAT_ACTION_TEXT, this.EAT_ACTION_LENGTH, this);
 	}
 	
 	/**
@@ -44,9 +54,9 @@ public class Programmer {
 	 * @return The CoderTask to be completed
 	*/
 	public CoderTask gotoSleep() {
-		System.out.println("Sleeping ...");
+		System.out.println(this.SLEEP_ACTION_TEXT + " ...");
 		
-		return new CoderTask("Sleeping", 9000L, this);
+		return new CoderTask(this.SLEEP_ACTION_TEXT, this.SLEEP_ACTION_LENGTH, this);
 	}
 	
 	/**
@@ -56,9 +66,9 @@ public class Programmer {
 	 * @return The CoderTask to be completed
 	*/
 	public CoderTask writeCode() {		
-		System.out.println("Writing code ...");
+		System.out.println(this.CODE_ACTION_TEXT + " ...");
 		
-		return new CoderTask("Coding", 3000L, this);
+		return new CoderTask(this.CODE_ACTION_TEXT, this.CODE_ACTION_LENGTH, this);
 	}
 	
 	/**
@@ -69,6 +79,6 @@ public class Programmer {
 	*/
 	public Programmer(String name) {
 		this.name = name;
-		this.actions = new String[] {"Eat", "Sleep", "Code"};
+		this.actions = this.BASIC_ACTIONS;
 	}
 }
