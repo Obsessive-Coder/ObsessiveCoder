@@ -6,6 +6,13 @@ import java.util.Timer;
  * <p>The controller class creates the Programmer object and manages user decisions.</p>
 */
 public class Controller {
+	private static final String PROMPT_NAME_MESSAGE = "What is your name?";
+	private static final String PROMPT_ACTION_TITLE = "Welcome ";
+	private static final String PROMPT_ACTION_MESSAGE = "What would you like to do?";
+	private static final String WARNING_NAME_TITLE = "WARNING";
+	private static final String WARNING_NAME_MESSAGE = "The name field is required.";
+	private static final String QUIT_ACTION_TEXT = "Quitting ...";
+	
 	/**
 	 * promptCoderName()
 	 * <p>private static String promptCoderName()</p>
@@ -15,9 +22,15 @@ public class Controller {
 	*/
 	private static String promptCoderName() {
 		String coderName = "";
-		
-		do {
-			coderName = JOptionPane.showInputDialog("What is your name?");
+		int timesPrompted = 0;
+		do {			
+			if(timesPrompted >= 3) {
+				timesPrompted = 0;
+				JOptionPane.showMessageDialog(null, WARNING_NAME_MESSAGE, WARNING_NAME_TITLE, JOptionPane.ERROR_MESSAGE);
+			}
+			
+			coderName = JOptionPane.showInputDialog(PROMPT_NAME_MESSAGE);
+			timesPrompted += 1;
 			
 			if(coderName == null) {
 				quit();
@@ -37,7 +50,7 @@ public class Controller {
 		String coderName = coder.getName();
 		String[] coderActions = coder.getActions();
 			
-		String action = (String) JOptionPane.showInputDialog(null, "What would you like to do?", "Welcome " + coderName, JOptionPane.QUESTION_MESSAGE, null, coderActions, coderActions[2]);
+		String action = (String) JOptionPane.showInputDialog(null, PROMPT_ACTION_MESSAGE, PROMPT_ACTION_TITLE + coderName, JOptionPane.QUESTION_MESSAGE, null, coderActions, coderActions[2]);
 		CoderTask coderTask;
 		
 		if (action == null) {
@@ -71,7 +84,7 @@ public class Controller {
 	 * <p>Exits the application.</p>
 	*/
 	private static void quit() {
-		System.out.println("Quitting ...");
+		System.out.println(QUIT_ACTION_TEXT);
 		System.exit(0);
 	}
 
