@@ -15,7 +15,7 @@ public class Programmer {
 	private final long CODE_ACTION_LENGTH = 3000L;
 	
 	private final String[] BASIC_ACTIONS = new String[] {"eat", "sleep", "code", "show needs", "show stats"};
-	private final String[] BASIC_NEEDS = new String[] {"satiation", "sleep", "mental health"};
+	private final String[] BASIC_NEEDS = new String[] {"satiation", "sleep", "sanity"};
 	private final String[] BASIC_STATISTICS = new String[] {"hours coded"};
 	
 	// The programmer's name.
@@ -72,7 +72,7 @@ public class Programmer {
 	private Map<String, Integer> getInitialNeeds() {
 		Map<String, Integer> needs = new HashMap<String, Integer>();
 		for(String need : BASIC_NEEDS) {
-			needs.put(need, 0);
+			needs.put(need, 75);
 		}
 		
 		return needs;
