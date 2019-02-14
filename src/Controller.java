@@ -15,6 +15,8 @@ public class Controller {
 	private static final String WARNING_NAME_MESSAGE = "The name field is required.";
 	private static final String QUIT_ACTION_TEXT = "Quitting ...";
 	
+	private static Clock timer;
+	
 	/**
 	 * promptCoderName()
 	 * <p>private static String promptCoderName()</p>
@@ -90,9 +92,7 @@ public class Controller {
 			return;
 		}
 		
-		Timer timer = new Timer();
-		
-		timer.schedule(coderTask, coderTask.getLength());
+		timer = new Clock(coderTask.getLength());
 	}
 	
 	/**
@@ -112,7 +112,10 @@ public class Controller {
 	 * <p>Prompts the user for a name, creates a new Programmer Object, then begins prompting the user for actions.</p>
 	*/
 	public static void main(String[] args) {
+		// Get the coder's name.
 		String coderName = promptCoderName();
+		
+		// Create the Programmer object.
 		Programmer coder = new Programmer(coderName);
 		
 		promptAction(coder);

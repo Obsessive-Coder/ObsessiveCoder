@@ -1,38 +1,33 @@
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.*;
 
 public class Clock implements Runnable{
 	JFrame frame;
 	Thread thread = null;
-	int hourCount;
-	int minuteCount;
-	int secondCount;
+	long hourCount;
+	long minuteCount;
+	long secondCount;
 	String timeDisplay = "";
 	JButton button;
 	
-	Clock(int hourCount, int minuteCount, int secondCount) {
-		this.hourCount = hourCount;
-		this.minuteCount = minuteCount;
-		this.secondCount = secondCount;
+	Clock(long length) {
+		this.hourCount = TimeUnit.MILLISECONDS.toHours(length);
+		long totalMinuteCount = TimeUnit.MILLISECONDS.toMinutes(length);
+		this.minuteCount = totalMinuteCount - (this.hourCount * 60);
+		this.secondCount = TimeUnit.MILLISECONDS.toSeconds(length) - TimeUnit.MINUTES.toSeconds(totalMinuteCount);
 		
-		frame = new JFrame();
 		thread = new Thread(this);
 		thread.start();
-		button = new JButton();
-		button.setBounds(50, 150, 200, 50);
-		
-		frame.add(button);
-		frame.setSize(300, 400);
-		frame.setLayout(null);
-		frame.setVisible(true);
 	}
 
-	@Override
-	public void run() {
+	@Override	public void run() {
 		try {
 			while(true) {
 				// If timer is over.
 				if(secondCount == 0 && minuteCount == 0 && hourCount == 0) {
-					System.out.println("Times Up!");
+					System.out.println();
+					System.out.println("\nTimes Up!");
 					break;
 				}
 				
@@ -52,7 +47,7 @@ public class Clock implements Runnable{
 				secondCount -= 1;
 				
 	            timeDisplay = String.valueOf(String.format("%02d", hourCount)) + ":" + String.valueOf(String.format("%02d", minuteCount)) + ":" + String.valueOf(String.format("%02d", secondCount));
-	            System.out.println(timeDisplay);
+	           
 				printTime();
 				Thread.sleep(1);
 			}
@@ -63,6 +58,7 @@ public class Clock implements Runnable{
 	}
 	
 	public void printTime() {
-		button.setText(timeDisplay);
+		System.out.print("\r");
+		System.out.print(timeDisplay);
 	}
 }

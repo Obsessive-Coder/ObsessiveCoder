@@ -6,13 +6,15 @@ import java.util.Map;
  * <p>It holds the name of the user, their statistics, and currents needs.</p>
  */
 public class Programmer {
+	private final boolean isTesting = false;
+	
 	private final String EAT_ACTION_TEXT = "eating";
 	private final String SLEEP_ACTION_TEXT = "sleeping";
 	private final String CODE_ACTION_TEXT = "coding";
 	
-	private final long EAT_ACTION_LENGTH = 60L * 1000L * 10L; // 10 minutes
-	private final long SLEEP_ACTION_LENGTH = 60L * 1000L * 60L * 6L; // 6 hours
-	private final long CODE_ACTION_LENGTH = 60L * 1000L * 60L; // 60 minutes
+	private long EAT_ACTION_LENGTH = 60L * 1000L * 10L; // 10 minutes
+	private long SLEEP_ACTION_LENGTH = 60L * 1000L * 60L * 6L; // 6 hours
+	private long CODE_ACTION_LENGTH = 60L * 1000L * 60L; // 60 minutes
 	
 	private final long TEST_EAT_ACTION_LENGTH = 1000L;
 	private final long TEST_SLEEP_ACTION_LENGTH = 9000L;
@@ -90,8 +92,8 @@ public class Programmer {
 	*/
 	public CoderTask eatFood() {
 		System.out.println(this.EAT_ACTION_TEXT + " ...");
-		
-		return new CoderTask(this.EAT_ACTION_TEXT, this.TEST_EAT_ACTION_LENGTH, this);
+		System.out.println();
+		return new CoderTask(this.EAT_ACTION_TEXT, this.EAT_ACTION_LENGTH, this);
 	}
 	
 	/**
@@ -102,8 +104,8 @@ public class Programmer {
 	*/
 	public CoderTask gotoSleep() {
 		System.out.println(this.SLEEP_ACTION_TEXT + " ...");
-		
-		return new CoderTask(this.SLEEP_ACTION_TEXT, this.TEST_SLEEP_ACTION_LENGTH, this);
+		System.out.println();
+		return new CoderTask(this.SLEEP_ACTION_TEXT, this.SLEEP_ACTION_LENGTH, this);
 	}
 	
 	/**
@@ -112,10 +114,10 @@ public class Programmer {
 	 * <p>Creates the task for writing code.</p>
 	 * @return The CoderTask to be completed
 	*/
-	public CoderTask writeCode() {		
+	public CoderTask writeCode() {
 		System.out.println(this.CODE_ACTION_TEXT + " ...");
-		
-		return new CoderTask(this.CODE_ACTION_TEXT, this.TEST_CODE_ACTION_LENGTH, this);
+		System.out.println();
+		return new CoderTask(this.CODE_ACTION_TEXT, this.CODE_ACTION_LENGTH, this);
 	}
 	
 	/**
@@ -129,5 +131,11 @@ public class Programmer {
 		this.actions = BASIC_ACTIONS;
 		this.statistics = getInitialStatistics();
 		this.needs = getInitialNeeds();
+		
+		if(isTesting) {
+			EAT_ACTION_LENGTH = TEST_EAT_ACTION_LENGTH;
+			SLEEP_ACTION_LENGTH = TEST_SLEEP_ACTION_LENGTH;
+			CODE_ACTION_LENGTH = TEST_CODE_ACTION_LENGTH;
+		}
 	}
 }
