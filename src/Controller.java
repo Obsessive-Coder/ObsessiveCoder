@@ -1,7 +1,5 @@
 import javax.swing.JOptionPane;
-
 import java.util.Map;
-import java.util.Timer;
 
 /**
  * The main application controller.
@@ -15,7 +13,7 @@ public class Controller {
 	private static final String WARNING_NAME_MESSAGE = "The name field is required.";
 	private static final String QUIT_ACTION_TEXT = "Quitting ...";
 	
-	private static Clock timer;
+	private static TaskTimer timer;
 	
 	/**
 	 * promptCoderName()
@@ -92,7 +90,7 @@ public class Controller {
 			return;
 		}
 		
-		timer = new Clock(coderTask.getLength());
+		timer = new TaskTimer(coderTask.getLength());
 	}
 	
 	/**

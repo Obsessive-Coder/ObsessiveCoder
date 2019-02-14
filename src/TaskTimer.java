@@ -1,8 +1,7 @@
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.*;
 
-public class Clock implements Runnable{
+public class TaskTimer implements Runnable{
 	JFrame frame;
 	Thread thread = null;
 	long hourCount;
@@ -11,7 +10,7 @@ public class Clock implements Runnable{
 	String timeDisplay = "";
 	JButton button;
 	
-	Clock(long length) {
+	TaskTimer(long length) {
 		this.hourCount = TimeUnit.MILLISECONDS.toHours(length);
 		long totalMinuteCount = TimeUnit.MILLISECONDS.toMinutes(length);
 		this.minuteCount = totalMinuteCount - (this.hourCount * 60);
