@@ -5,7 +5,11 @@ import java.util.TimerTask;
  */
 public class CoderTask extends TimerTask {
 	private Programmer coder;
+	
 	private String name;
+	public String getName() {
+		return this.name;
+	}
 	
 	private long length;
 	/**

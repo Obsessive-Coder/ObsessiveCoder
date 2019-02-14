@@ -90,7 +90,7 @@ public class Controller {
 			return;
 		}
 		
-		timer = new TaskTimer(coderTask.getLength());
+		timer = new TaskTimer(coderTask.getLength(), coderTask.getName() + " ...");
 	}
 	
 	/**
@@ -116,7 +116,9 @@ public class Controller {
 		// Create the Programmer object.
 		Programmer coder = new Programmer(coderName);
 		
-		promptAction(coder);
+		new MainWindow(coder);
+		
+//		promptAction(coder);
 	}
 	
 	
