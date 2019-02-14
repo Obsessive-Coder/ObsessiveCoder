@@ -9,6 +9,7 @@ public class MainWindow {
 	
 	private JFrame frame;
 	private JLabel welcomeText;
+	private JSplitPane mainPane;
 	private JSplitPane infoPane;
 	
 	private Programmer coder;
@@ -34,8 +35,15 @@ public class MainWindow {
 		this.infoPane.setDividerSize(0);
 		this.infoPane.setDividerLocation(200);
 		
-		this.frame.add(this.infoPane);
+		JPanel actionPanel = this.buildActionPanel();
 		
+		this.mainPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, infoPane, actionPanel);
+		this.mainPane.setDividerSize(0);
+		this.mainPane.setDividerLocation(250);
+		
+		this.frame.add(this.mainPane);
+		
+//		this.frame.pack();
 		this.frame.setVisible(true);
 	}
 	
@@ -56,5 +64,19 @@ public class MainWindow {
 		}
 		
 		return infoPanel;
+	}
+	
+	private JPanel buildActionPanel() {
+		JPanel actionPanel = new JPanel();
+		actionPanel.setLayout(new BoxLayout(actionPanel, BoxLayout.X_AXIS));
+		actionPanel.setMinimumSize(new Dimension(200, 150));
+		
+		String[] actions = this.coder.getActions();
+		for(int i = 0; i < actions.length; i++) {
+			JButton actionButton = new JButton(actions[i]);
+			actionPanel.add(actionButton);	
+		}
+
+		return actionPanel;
 	}
 }

@@ -20,9 +20,9 @@ public class Programmer {
 	private final long TEST_SLEEP_ACTION_LENGTH = 9000L;
 	private final long TEST_CODE_ACTION_LENGTH = 3000L;
 	
-	private final String[] BASIC_ACTIONS = new String[] {"eat", "sleep", "code", "show needs", "show stats"};
+	private final String[] BASIC_ACTIONS = new String[] {"Eat", "Sleep", "Code"};
 	private final String[] BASIC_NEEDS = new String[] {"satiation", "sleep", "sanity"};
-	private final String[] BASIC_STATISTICS = new String[] {"hours coded"};
+	private final String[] BASIC_STATISTICS = new String[] {"hours coded", "obsessive multiplier"};
 	
 	// The programmer's name.
 	private String name;
