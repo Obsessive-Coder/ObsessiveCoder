@@ -1,19 +1,25 @@
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 public class TaskTimer implements Runnable{
 	Thread thread = null;
+	JFrame frame;
+	JOptionPane timerBox;
 	int hourCount;
 	int minuteCount;
 	int secondCount;
 	String messageDisplay;
 	String timeDisplay = "";
 	
-	TaskTimer(long length, String message) {
+	TaskTimer(long length, String message, JFrame frame) {
 		int totalMinuteCount = (int) TimeUnit.MILLISECONDS.toMinutes(length);
 		this.hourCount = (int) TimeUnit.MILLISECONDS.toHours(length);		
 		this.minuteCount = (int) totalMinuteCount - (this.hourCount * 60);
 		this.secondCount = (int) (TimeUnit.MILLISECONDS.toSeconds(length) - TimeUnit.MINUTES.toSeconds(totalMinuteCount));
 		this.messageDisplay = message;
+		this.frame = frame;
 		
 		thread = new Thread(this);
 		thread.start();

@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Map;
 
 import javax.swing.*;
@@ -15,9 +17,20 @@ public class MainWindow {
 	private Programmer coder;
 	private String username;
 	
+	private TaskTimer timer;
+	
 	MainWindow(Programmer coder) {
 		this.coder = coder;
 		this.username = this.coder.getName();
+		
+		this.buildFrame();
+	}
+	
+	private void buildFrame() {
+		if(this.frame != null) {
+			this.frame.setVisible(false);
+			this.frame.getContentPane().removeAll();
+		}
 		
 		this.frame = new JFrame(MAIN_TITLE);
 		this.welcomeText = new JLabel(WELCOME_MESSAGE + this.username, JLabel.CENTER);
@@ -41,10 +54,10 @@ public class MainWindow {
 		this.mainPane.setDividerSize(0);
 		this.mainPane.setDividerLocation(250);
 		
-		this.frame.add(this.mainPane);
+		this.frame.getContentPane().add(this.mainPane);
 		
-//		this.frame.pack();
 		this.frame.setVisible(true);
+		this.frame.repaint();
 	}
 	
 	private JPanel buildInfoPanel(String type, Map<String, Integer> info) {		
@@ -55,7 +68,7 @@ public class MainWindow {
 		
 		JPanel infoPanel = new JPanel();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-		infoPanel.setMinimumSize(new Dimension(200, 200));
+		infoPanel.setMinimumSize(new Dimension(200, 150));
 		
 		infoPanel.add(infoTitle);
 		
@@ -73,7 +86,37 @@ public class MainWindow {
 		
 		String[] actions = this.coder.getActions();
 		for(int i = 0; i < actions.length; i++) {
-			JButton actionButton = new JButton(actions[i]);
+			String action = actions[i];
+			JButton actionButton = new JButton(action);
+			MainWindow self = this;
+			
+			actionButton.addActionListener(new ActionListener()
+			{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  CoderTask coderTask = null;
+				  switch(action) {
+				  case "Eat":
+					  coderTask = coder.eatFood();
+					  break;
+				  case "Code":
+					  coderTask = coder.writeCode();
+					  break;
+				  case "Sleep":
+					  coderTask = coder.gotoSleep();
+					  break;
+				  default:
+					  System.out.println("Unknown command.");
+					  break;
+				  }
+				  
+				  if(coderTask != null) {
+					  timer = new TaskTimer(coderTask.getLength(), coderTask.getName() + " ...", self.frame);
+				  }
+				  buildFrame();
+			  }
+			});
+			
 			actionPanel.add(actionButton);	
 		}
 

@@ -20,8 +20,8 @@ public class Programmer {
 	private final long TEST_SLEEP_ACTION_LENGTH = 9000L;
 	private final long TEST_CODE_ACTION_LENGTH = 3000L;
 	
-	private final String[] BASIC_ACTIONS = new String[] {"Eat", "Sleep", "Code"};
-	private final String[] BASIC_NEEDS = new String[] {"satiation", "sleep", "sanity"};
+	private final String[] BASIC_ACTIONS = new String[] {"Eat", "Code", "Sleep"};
+	private final String[] BASIC_NEEDS = new String[] {"satiation", "tiredness", "sanity"};
 	private final String[] BASIC_STATISTICS = new String[] {"hours coded", "obsessive multiplier"};
 	
 	// The programmer's name.
@@ -93,6 +93,23 @@ public class Programmer {
 	public CoderTask eatFood() {
 		System.out.println(this.EAT_ACTION_TEXT + " ...");
 		System.out.println();
+		
+		// Increase satiation.
+		// Decrease sleep.
+		Map<String, Integer> needs = this.needs;
+		Integer satiation = needs.get("satiation");
+		satiation += 30;
+		
+		Integer tiredness = needs.get("tiredness");
+		tiredness -= 10;
+		
+		needs.put("satiation", satiation);
+		needs.put("tiredness", tiredness);
+		
+		this.setNeeds(needs);
+		
+		System.out.println(this.needs);
+		
 		return new CoderTask(this.EAT_ACTION_TEXT, this.EAT_ACTION_LENGTH, this);
 	}
 	

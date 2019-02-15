@@ -90,7 +90,7 @@ public class Controller {
 			return;
 		}
 		
-		timer = new TaskTimer(coderTask.getLength(), coderTask.getName() + " ...");
+//		timer = new TaskTimer(coderTask.getLength(), coderTask.getName() + " ...");
 	}
 	
 	/**
